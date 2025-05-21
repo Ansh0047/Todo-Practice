@@ -1,9 +1,12 @@
 import express from "express";
 import userRouter from "./routes/user.js"
 import { connectDB } from "./data/database.js";
+import dotenv from "dotenv";
 
 const app = express();
 
+
+dotenv.config();
 app.use(express.json());
 
 
@@ -18,8 +21,6 @@ connectDB();
 app.get("/", (req,res) => {
     res.send("Hello AK");
 });
-
-
 
 app.listen(5000,() => {
     console.log("Server is working");

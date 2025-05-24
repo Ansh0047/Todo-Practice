@@ -5,13 +5,21 @@ import { connectDB } from "./data/database.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { errorMiddleWare } from "./middlewares/error.js";
+import cors from "cors";
 
-const app = express();
+export const app = express();
 
 
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());   // using this middleware i can acces cookies  
+
+// cors middleware to allow requests from other domains
+app.use(cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["GET","POST","PUT","DELETE"],
+    credentials: true,
+}));    
 
 
 // if there is some common route then we can add the prefix so that it is already added before it hits
@@ -19,17 +27,10 @@ app.use("/users", userRouter);
 app.use("/task", taskRouter);
 
 
-// separated the database connection
-connectDB();
-
 
 app.get("/", (req, res) => {
     res.send("Hello AK");
 });
-
-app.listen(5000, () => {
-    console.log("Server is working");
-})
 
 
 // error middleware
